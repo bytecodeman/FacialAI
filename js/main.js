@@ -49,8 +49,29 @@ video.addEventListener("playing", () => {
     predictedAges.length = 0;
   });
 
+  async function uploadImage(blob) {
+    const fd = new FormData();
+    fd.append("system", "FacialAI");
+    fd.append("capturedImage", blob, "FacialAIBlob");
+    const resp = await fetch("./upload/", {
+      method: "POST",
+      body: fd,
+    });
+    const data = await resp.json();
+    console.log(data);
+  }
+
   capture.addEventListener("click", (e) => {
     startAnalysis = false;
+
+    const canvas = document.querySelector(".captureCanvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas
+      .getContext("2d")
+      .drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    //console.log(canvas.toDataURL());
+    canvas.toBlob((blob) => uploadImage(blob));
   });
 
   const canvas = faceapi.createCanvasFromMedia(video);
