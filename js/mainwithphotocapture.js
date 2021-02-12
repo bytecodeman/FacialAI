@@ -1,16 +1,10 @@
 "use strict";
-if (
-  location.hostname !== "localhost" &&
-  location.hostname !== "127.0.0.1" &&
-  location.protocol !== "https:"
-) {
-  location.replace(
-    `https:${location.href.substring(location.protocol.length)}`
-  );
+if (location.protocol !== 'https:') {
+  location.replace(`https:${location.href.substring(location.protocol.length)}`);
 }
 
 const start = document.querySelector(".start");
-const capture = document.querySelector(".capture");
+const stop = document.querySelector(".stop");
 const restart = document.querySelector(".restart");
 const video = document.querySelector(".video");
 const loading = document.querySelector(".loading");
@@ -24,7 +18,7 @@ const expressionProbEl = document.querySelector("#expressionProbability");
 
 let startAnalysis = false;
 
-restart.addEventListener("click", () => window.location.reload());
+restart.addEventListener("click", () => window.location.reload(false));
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri("./models"),
@@ -33,21 +27,25 @@ Promise.all([
   faceapi.nets.faceExpressionNet.loadFromUri("./models"),
   faceapi.nets.ageGenderNet.loadFromUri("./models"),
 ])
-  .then(() =>
-    navigator.mediaDevices.getUserMedia({
+  .then(startVideo)
+  .catch(
+    (err) =>
+      (loading.innerText = "Error!  Are you running in secure https mode?")
+  );
+
+function startVideo() {
+  navigator.mediaDevices
+    .getUserMedia({
       video: {
         facingMode: "user",
       },
       audio: false,
     })
-  )
-  .then((cameraStream) => {
-    video.srcObject = cameraStream;
-  })
-  .catch((err) => {
-    console.error(err);
-    loading.innerText = `Error!  ${err}`;
-  });
+    .then((cameraStream) => {
+      video.srcObject = cameraStream;
+    });
+  //.catch((err) => console.error(err));
+}
 
 video.addEventListener("playing", () => {
   loading.classList.remove("active");
@@ -62,6 +60,15 @@ video.addEventListener("playing", () => {
 
   stop.addEventListener("click", (e) => {
     startAnalysis = false;
+
+    const canvas = document.querySelector(".captureCanvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas
+      .getContext("2d")
+      .drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    //console.log(canvas.toDataURL());
+    canvas.toBlob((blob) => uploadImage(blob));
   });
 
   const canvas = faceapi.createCanvasFromMedia(video);
