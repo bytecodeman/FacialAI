@@ -10,7 +10,7 @@ if (
 }
 
 const start = document.querySelector(".start");
-const capture = document.querySelector(".capture");
+const stop = document.querySelector(".stop");
 const restart = document.querySelector(".restart");
 const video = document.querySelector(".video");
 const loading = document.querySelector(".loading");
