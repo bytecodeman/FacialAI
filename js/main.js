@@ -50,8 +50,8 @@ Promise.all([
   });
 
 video.addEventListener("playing", () => {
-  loading.classList.remove("active");
   const predictedAges = [];
+  loading.classList.remove("active");
 
   start.addEventListener("click", (e) => {
     startAnalysis = true;
@@ -62,6 +62,7 @@ video.addEventListener("playing", () => {
 
   stop.addEventListener("click", (e) => {
     startAnalysis = false;
+    canvas.classList.remove("active");
   });
 
   const canvas = faceapi.createCanvasFromMedia(video);
@@ -77,16 +78,15 @@ video.addEventListener("playing", () => {
 
   setInterval(async () => {
     function interpolateAgePredictions(age) {
-      if (predictedAges.unshift(age) >= 31) {
-        predictedAges.length = 30;
-      }
-      const avgPredictedAge =
-        predictedAges.reduce((total, a) => total + a) / predictedAges.length;
-      return avgPredictedAge;
+      predictedAges.splice(29, 1, age);
+      return (
+        predictedAges.reduce((total, a) => total + a) / predictedAges.length
+      );
     }
+
     const detections = await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
+      //.withFaceLandmarks()
       .withFaceExpressions()
       .withAgeAndGender();
 
@@ -99,10 +99,6 @@ video.addEventListener("playing", () => {
         age,
         expressions,
       } = resizedDetections[0];
-
-      //faceapi.draw.drawDetections(canvas, resizedDetections);
-      //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-      //faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
       const interpolatedAge = interpolateAgePredictions(age);
       const exprkeys = Object.keys(expressions);
@@ -117,16 +113,6 @@ video.addEventListener("playing", () => {
       expressionProbEl.innerText = `${Math.round(
         100 * expressions[largestExpression]
       )}%`;
-
-      //const bottomRight = {
-      //  x: resizedDetections[0].detection.box.bottomRight.x - 50,
-      //  y: resizedDetections[0].detection.box.bottomRight.y,
-      //};
-
-      //new faceapi.draw.DrawTextField(
-      //[`${faceapi.utils.round(interpolatedAge, 0)} years`],
-      //  bottomRight
-      //).draw(canvas);
     }
   }, 100);
 });
