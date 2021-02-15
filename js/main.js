@@ -78,7 +78,10 @@ video.addEventListener("playing", () => {
 
   setInterval(async () => {
     function interpolateAgePredictions(age) {
-      predictedAges.splice(29, 1, age);
+      if (predictedAges.unshift(age) >= 31) {
+        predictedAges.length = 30;
+      }
+      console.log(predictedAges);
       return (
         predictedAges.reduce((total, a) => total + a) / predictedAges.length
       );

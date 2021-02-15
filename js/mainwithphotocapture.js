@@ -1,6 +1,12 @@
 "use strict";
-if (location.protocol !== 'https:') {
-  location.replace(`https:${location.href.substring(location.protocol.length)}`);
+if (
+  location.hostname !== "localhost" &&
+  location.hostname !== "127.0.0.1" &&
+  location.protocol !== "https:"
+) {
+  location.replace(
+    `https:${location.href.substring(location.protocol.length)}`
+  );
 }
 
 const start = document.querySelector(".start");
@@ -34,7 +40,7 @@ Promise.all([
   );
 
 function startVideo() {
-  navigator.mediaDevices
+  return navigator.mediaDevices
     .getUserMedia({
       video: {
         facingMode: "user",
@@ -43,8 +49,11 @@ function startVideo() {
     })
     .then((cameraStream) => {
       video.srcObject = cameraStream;
+    })
+    .catch((err) => {
+      console.error(err);
+      throw err;
     });
-  //.catch((err) => console.error(err));
 }
 
 video.addEventListener("playing", () => {
