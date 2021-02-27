@@ -9,6 +9,8 @@ if (
   );
 }
 
+let validated = false;
+
 const start = document.querySelector(".start");
 const stop = document.querySelector(".stop");
 const restart = document.querySelector(".restart");
@@ -95,7 +97,7 @@ video.addEventListener("playing", () => {
 
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    if (validated.get() && startAnalysis && resizedDetections.length > 0) {
+    if (validated && startAnalysis && resizedDetections.length > 0) {
       const {
         gender,
         genderProbability,
