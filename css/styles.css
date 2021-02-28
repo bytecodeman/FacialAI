@@ -107,3 +107,8 @@ html.cannotTouch #toTop i:hover {
   color: rgb(51, 122, 183);
   background-color: rgba(200, 200, 200, 0.4);
 }
+
+.twitter-share-button,
+.fb-share-button {
+  vertical-align: text-bottom !important;
+}

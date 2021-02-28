@@ -34,6 +34,7 @@
         </script>
     </head>
     <body>
+        <div id="fb-root"></div>
         <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
             <div class="container">
                 <a href="/specialapps/" class="navbar-brand mb-0 h1">Special Apps</a>
@@ -66,7 +67,15 @@
                         <p class="d-print-none">
                             <a href="#" data-toggle="modal" data-target="#myModal">About</a>
                         </p>
-                        <!--<div class="addthis_tipjar_inline"></div>-->
+
+                        <div class="fb-share-button" style="vertical-align: bottom"
+                             data-href="https://bytecodeman.com/specialapps/facialAI/" data-layout="button"
+                             data-size="small"><a target="_blank"
+                               href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbytecodeman.com%2Fspecialapps%2FfacialAI%2F&amp;src=sdkpreparse"
+                               class="fb-xfbml-parse-ignore">Share</a></div>
+                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button"
+                           data-show-count="false">Tweet</a>
+
                     </div>
                     <div class="col-lg-4 d-print-none">
                         <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
@@ -178,7 +187,9 @@
         <script src="js/face-api.min.js"></script>
         <script src="js/main.min.js"></script>
         <script src="js/indexhtml.min.js"></script>
-        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a576c39d176f4a6"></script>
+        <script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0" crossorigin="anonymous"
+                nonce="wWwKGSas"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         <script src="//www.google.com/recaptcha/api.js?render=6LdWKUMaAAAAAF8zS_5ima4fp7rtuDz19s2tdvEU"></script>
     </body>
 </html>

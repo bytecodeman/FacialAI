@@ -35,7 +35,7 @@ $(function () {
 
   $("#recaptchacheck").submit(function (event) {
     event.preventDefault();
-    if (validated) {
+    if (validated.get()) {
       return false;
     }
     $.ajax({
