@@ -110,5 +110,5 @@ html.cannotTouch #toTop i:hover {
 
 .twitter-share-button,
 .fb-share-button {
-  vertical-align: text-bottom !important;
+  vertical-align: bottom !important;
 }
