@@ -1,4 +1,6 @@
 "use strict";
+import validated from "./validatesingleton.js";
+
 if (
   location.hostname !== "localhost" &&
   location.hostname !== "127.0.0.1" &&
