@@ -3,7 +3,7 @@ console.log(path.resolve(__dirname, "js"));
 
 module.exports = {
   entry: {
-    "facialAIbundle.js": [path.resolve(__dirname, "js/entry.js")],
+    "facialaibundle.js": [path.resolve(__dirname, "js/entry.js")],
   },
   output: {
     filename: "[name]",
