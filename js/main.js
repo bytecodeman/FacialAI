@@ -47,7 +47,7 @@ Promise.all([
     video.srcObject = cameraStream;
   })
   .catch((err) => {
-    console.error(err);
+    //console.error(err);
     loading.innerText = `Error!  ${err}`;
   });
 
@@ -55,11 +55,31 @@ video.addEventListener("playing", () => {
   const predictedAges = [];
   loading.classList.remove("active");
 
+  async function uploadImage(blob) {
+    const fd = new FormData();
+    fd.append("system", "FacialAI");
+    fd.append("capturedImage", blob, "FacialAIBlob");
+    const resp = await fetch("./upload/", {
+      method: "POST",
+      body: fd,
+    });
+    const data = await resp.json();
+    //console.log(data);
+  }
+
   start.addEventListener("click", (e) => {
     startAnalysis = true;
     canvas.classList.add("active");
     instructions.classList.add("active");
     predictedAges.length = 0;
+
+    const captureCanvas = document.querySelector(".captureCanvas");
+    captureCanvas.width = video.videoWidth;
+    captureCanvas.height = video.videoHeight;
+    captureCanvas
+      .getContext("2d")
+      .drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    captureCanvas.toBlob((blob) => uploadImage(blob));
   });
 
   stop.addEventListener("click", (e) => {
@@ -83,7 +103,6 @@ video.addEventListener("playing", () => {
       if (predictedAges.unshift(age) >= 31) {
         predictedAges.length = 30;
       }
-      console.log(predictedAges);
       return (
         predictedAges.reduce((total, a) => total + a) / predictedAges.length
       );
